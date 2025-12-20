@@ -1,3 +1,5 @@
+# Установка и настройка VirtualBox & Vagrant
+
 ## 0. Базовые пакеты для сборки модулей ядра (обязательно)
 #### Установка:
 
@@ -48,7 +50,7 @@ apt install -y virtualbox-7.1
 apt-cache policy virtualbox-7.1
 ````
 
-#### Cобрать и установить модули:
+#### Сборка и установка модулей:
 
 ````bash
 /sbin/vboxconfig           
@@ -85,13 +87,13 @@ vagrant --version
 ````
 
 ### Плагины Vagrant (обязательно).
-#### синхронизация Guest Additions:
+#### Синхронизация Guest Additions:
 
 ````bash
 vagrant plugin install vagrant-vbguest
 ````
 
-#### перезагрузка без проблем:
+#### Перезагрузка без проблем:
 
 ````bash
 vagrant plugin install vagrant-reload
