@@ -5,13 +5,13 @@
 
 ````bash
 apt install -y \
-  qemu-kvm \                    # сам гипервизор
-  libvirt-daemon-system \       # управляющий слой
-  libvirt-clients \             # управляющий слой
-  virtinst \                    # создание ВМ из CLI
-  virt-manager \                # GUI (удобно даже на сервере по X11)
-  bridge-utils \                # сети
-  cpu-checker                   # проверка KVM
+  qemu-kvm \
+  libvirt-daemon-system \
+  libvirt-clients \
+  virtinst \
+  virt-manager \
+  bridge-utils \
+  cpu-checker
 ````
 
 #### Проверка:

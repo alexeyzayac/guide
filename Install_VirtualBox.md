@@ -28,7 +28,7 @@ ls /lib/modules/$(uname -r)/build
 ````bash
 wget -qO- https://www.virtualbox.org/download/oracle_vbox_2016.asc \
   | gpg --dearmor \
-  | tee /usr/share/keyrings/oracle-virtualbox.gpg >/dev/null
+  | tee /usr/share/keyrings/oracle_vbox.gpg >/dev/null
 ````
 
 #### Добавление репозитория:
