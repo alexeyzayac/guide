@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Установка пакетов
+      ansible.builtin.apt:
+        name:
+          - tree
+          - nano
+          - vim
+          - htop
+        state: latest
+        update_cache: yes
