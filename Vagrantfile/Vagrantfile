@@ -1,2 +1,2 @@
-# load 'project/nginx-vm'
-load 'project/zabbix-vm'
+load 'project/nginx-vm.rb'
+load 'project/zabbix-vm.rb'

@@ -2,22 +2,27 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
+  # Базовый образ (Ubuntu 20.04 LTS)
   config.vm.box = "ubuntu/focal64"
 
   # Отключаем автоматическую замену SSH-ключей (повышает стабильность)
   config.ssh.insert_key = false
 
-  # Проброс портов
+  # Проброс портов: доступ к веб-серверу с хоста
   config.vm.network "forwarded_port", guest: 80, host: 8000
   config.vm.network "forwarded_port", guest: 443, host: 8443
 
   # Приватная сеть с фиксированным IP
   config.vm.network "private_network", ip: "192.168.56.10"
 
+   # Явный проброс SSH-порта
+  config.vm.network "forwarded_port", guest: 22, host: 2222,
+    id: "ssh", auto_correct: true
+
   # Настройки VirtualBox
   config.vm.provider "virtualbox" do |vb|
-    vb.name = "zabbix-vm"
-    vb.memory = "3072"
+    vb.name = "nginx-vm"
+    vb.memory = "2048"
     vb.cpus = 2
   end
 
@@ -33,15 +38,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     export DEBIAN_FRONTEND=noninteractive
     apt-get update
-    apt-get -y dist-upgrade 
+    apt-get dist-upgrade -y
     # Устанавливаем метапакет заголовков ядра (всегда под актуальное ядро) и инструменты сборки
     apt-get install -y linux-headers-generic build-essential python3 python3-pip
-    #
-    wget -P /tmp https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_6.0+ubuntu20.04_all.deb
-    dpkg -i /tmp/zabbix-release_latest_6.0+ubuntu20.04_all.deb
-    apt update
-    apt install -y zabbix-server-pgsql zabbix-frontend-php php7.4-pgsql zabbix-nginx-conf zabbix-sql-scripts zabbix-agent postgresql postgresql-contrib
-    sudo apt-get install -f
   SHELL
 
   # Провижинер Ansible (запускается внутри гостевой системы)
