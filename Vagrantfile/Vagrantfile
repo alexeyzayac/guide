@@ -1,2 +1,43 @@
-load 'project/nginx-vm.rb'
-load 'project/zabbix-vm.rb'
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.define "nginx" do |nginx|
+    nginx.vm.box = "ubuntu/focal64"
+    nginx.vm.hostname = "nginx-vm"
+
+    nginx.vm.network "forwarded_port", guest: 80, host: 8080,
+      id: "http", host_ip: "127.0.0.1"
+    nginx.vm.network "forwarded_port", guest: 443, host: 8443,
+      id: "https", host_ip: "127.0.0.1"
+    nginx.vm.network "forwarded_port", guest: 22, host: 2202,
+      id: "ssh", host_ip: "127.0.0.1", auto_correct: false
+
+    nginx.vm.network "private_network", ip: "192.168.56.10"
+
+    nginx.vm.provider "virtualbox" do |vb|
+      vb.name = "nginx-vm"
+      vb.memory = "2048"
+      vb.cpus = 2
+      vb.customize ["modifyvm", :id, "--vram", "64"]
+    end
+
+    nginx.vbguest.auto_update = true
+    nginx.vbguest.no_install = false
+    nginx.vbguest.no_remote = false
+    nginx.vbguest.auto_reboot = true
+    nginx.vbguest.iso_path = "https://download.virtualbox.org/virtualbox/%{version}/VBoxGuestAdditions_%{version}.iso"
+
+    nginx.vm.provision "shell", inline: <<-SHELL
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get update
+      apt-get dist-upgrade -y
+      apt-get install -y linux-headers-generic build-essential python3 python3-pip ansible
+    SHELL
+
+    nginx.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "playbook.yml"
+      ansible.verbose = "vv"
+    end
+  end
+end
