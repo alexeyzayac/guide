@@ -3,6 +3,14 @@
 - name: Configure webserver with nginx
   hosts: webservers
   become: true
+
+  vars:
+    tls_dir: /etc/nginx/ssl/
+    key_file: nginx.key
+    cert_file: nginx.crt
+    conf_file: /etc/nginx/sites-available/default
+    server_name: localhost
+
   tasks:
     - name: Ensure nginx is installed
       ansible.builtin.apt:
@@ -13,11 +21,12 @@
     - name: Copy nginx config file
       ansible.builtin.copy:
         src: nginx.conf
-        dest: /etc/nginx/sites-available/default
+        dest: "{{ conf_file }}"
+        mode: '0644'
 
     - name: Enable configuration
       ansible.builtin.file:
-        src: /etc/nginx/sites-available/default
+        src: "{{ conf_file }}"
         dest: /etc/nginx/sites-enabled/default
         state: link
 

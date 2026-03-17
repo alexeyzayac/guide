@@ -1,0 +1,36 @@
+---
+
+- name: Проверка SSH-доступности хостов
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Проверить доступность по SSH
+      ansible.builtin.ping:
+      register: result
+      ignore_unreachable: yes
+      changed_when: false
+
+- name: Сформировать отчёт на control-узле
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Собрать результаты проверки
+      set_fact:
+        host_status: >-
+          {{ host_status | default({}) |
+             combine({item: (hostvars[item].result.ping is defined)}) }}
+      loop: "{{ groups['all'] }}"
+
+    - name: Записать отчёт в файл
+      copy:
+        content: |
+          {% for host in groups['all'] %}
+          {{ host }}: {{ 'Доступен' if host_status[host] else 'Не доступен' }}
+          {% endfor %}
+        dest: ./availability_report.txt
+
+    - name: Вывести результаты в консоль
+      debug:
+        var: host_status
+...
