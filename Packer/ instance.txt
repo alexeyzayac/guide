@@ -1,0 +1,6 @@
+yc compute instance create \
+  --name my-debian-from-packer \
+  --zone ru-central1-a \
+  --create-boot-disk image-name=debian-11-docker \
+  --network-interface subnet-id=e9b8bj5p4odf1ffjn7gi,nat-ip-version=ipv4 \
+  --ssh-key ~/.ssh/yandex.cloud/cloud-alexeyzayac.pub 
