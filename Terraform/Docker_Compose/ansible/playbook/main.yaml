@@ -1,8 +1,8 @@
 ---
 
-- name: 
+- name:
   hosts: docker
-  become: yes
+  become: true
 
   vars:
     target_dir: /my_app
