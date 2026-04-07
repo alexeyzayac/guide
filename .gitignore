@@ -5,6 +5,7 @@
 *.swp
 *.swo
 *~
+ssh
 
 #obsidian
 .obsidian

@@ -1,0 +1,29 @@
+---
+
+- name: 
+  hosts: docker
+  become: yes
+
+  vars:
+    target_dir: /my_app
+    owner_group: localadmin
+
+  tasks:
+    - name: Ensure target directory exists with correct permissions
+      ansible.builtin.file:
+        path: "{{ target_dir }}"
+        state: directory
+        owner: "{{ owner_group }}"
+        group: "{{ owner_group }}"
+        mode: '0755'
+
+    - name: Copy all files from 'files' directory to target
+      ansible.builtin.copy:
+        src: files/
+        dest: "{{ target_dir }}/"
+        owner: "{{ owner_group }}"
+        group: "{{ owner_group }}"
+        mode: '0644'
+        directory_mode: '0755'
+
+...

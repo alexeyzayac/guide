@@ -2,8 +2,8 @@
 
 resource "local_file" "inventory" {
   content = <<-INI
-[docker_swarm]
-${yandex_compute_instance.vm-swarm-manager.name} ansible_host=${yandex_compute_instance.vm-swarm-manager.network_interface[0].nat_ip_address}
+[docker]
+${yandex_compute_instance.vm-docker-test.name} ansible_host=${yandex_compute_instance.vm-docker-test.network_interface[0].nat_ip_address}
 
 
 [all:vars]
