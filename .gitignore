@@ -1,9 +1,3 @@
-# Игнорировать директорию .vagrant/ — в ней хранится состояние ВМ, ключи, временные файлы
-.vagrant/
-
-# Локальный файл для переопределения настроек Vagrant (если используете)
-.Vagrantfile.local
-
 # Логи (если создаются)
 *.log
 
@@ -12,10 +6,7 @@
 *.swo
 *~
 
-# Дополнительно: если вы используете Ansible, можно игнорировать retry-файлы
-*.retry
-
-
+#obsidian
 .obsidian
 
 #terraform
@@ -27,3 +18,8 @@ terraform.tfstate.backup
 
 #ansible
 inventory.ini
+*.retry
+
+#vagrant
+.vagrant/
+.Vagrantfile.local

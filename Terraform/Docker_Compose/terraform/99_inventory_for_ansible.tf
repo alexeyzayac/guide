@@ -4,10 +4,7 @@ resource "local_file" "inventory" {
   content = <<-INI
 [docker_swarm]
 ${yandex_compute_instance.vm-swarm-manager.name} ansible_host=${yandex_compute_instance.vm-swarm-manager.network_interface[0].nat_ip_address}
-${join("\n", [
-  for idx, worker in yandex_compute_instance.vm-node-worker :
-  "${worker.name} ansible_host=${worker.network_interface[0].nat_ip_address}"
-])}
+
 
 [all:vars]
 ansible_user=localadmin
