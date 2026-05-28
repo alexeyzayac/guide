@@ -1,5 +1,15 @@
 ## Базовые команды
 ```bash
+# Поменять первое слово со вторым
+$ echo "Hello World" | awk '{print $2, $1}'
+World Hello
+
+
+
+
+
+
+
 #печать каждого второго слова
 awk '{print $2}' /etc/hosts
 
