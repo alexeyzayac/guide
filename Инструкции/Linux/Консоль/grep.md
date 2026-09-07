@@ -8,6 +8,14 @@ grep -w egor prm.txt #искать точечное соответствие
 grep -i Egor prm.txt #игнорировать регист
 
 grep -l Egor * #в каком файле находится соответствие
+
+grep -c ERROR /tmp/app.log #Печатает количество совпадений
+
+grep -v ERROR /tmp/app.log #Всё кроме строк с ERROR
+
+grep -n ERROR /tmp/app.log #с номерами строк
+
+grep -E "[INFO|WARN|ERROR|DEBUG]" /tmp/app.log # поиск в файл всех строк с этит словами
 ```
 ## Регулярные выражения
 ```bash

@@ -19,7 +19,7 @@ awk '{print $(25)}' /path/to/file
 #вывод всей строки $0
 awk '{print $0}' /etc/hosts
 
-#вывод посленей строки $NF
+#вывод последнего столбца $NF
 awk '{print $NF}' /etc/hosts
 ```
 awk по умолчанию не умеет печатать пробелы между значениями:
@@ -45,3 +45,6 @@ df -Ht ext4 --total | awk 'FNR<2 {print $1, $2}'
 ```bash
 cat /etc/passwd | awk -F':*' '{print $1, $6}'
 ```
+```bash
+awk '{s+=$1} END {print s}' /tmp/nums.txt #Посчитайте сумму всех чисел
+	```

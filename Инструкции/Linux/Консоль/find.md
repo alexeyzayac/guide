@@ -2,49 +2,17 @@
 
 ## Рекурсивный поис 
 ```bash
-$ find /etc -print | tail -n 5 # Рекурсивный вывод всех файлов и подкаталогов в /etc
-/etc/perl/Net/libnet.cfg
-/etc/sysctl.d
-/etc/sysctl.d/README.sysctl
-/etc/python3.13
-/etc/python3.13/sitecustomize.py
-```
-```bash
-$ find /etc -type f -print | tail -n 5 # Список всех файлов в /etc рекурсивно
-/etc/login.defs
-/etc/hosts
-/etc/perl/Net/libnet.cfg
-/etc/sysctl.d/README.sysctl
-/etc/python3.13/sitecustomize.py
-```
-```bash
-$ find /etc -type d -print | tail -n 5 # Список всех директориев в /etc рекурсивно
-/etc/profile.d
-/etc/perl
-/etc/perl/Net
-/etc/sysctl.d
-/etc/python3.13
-```
-```bash
-$ find /etc -type f -name "*.conf" -print | tail -n 5 # Список всех файлов в /etc заканчивающихся на .conf
-/etc/cups/printers.conf
-/etc/cups/subscriptions.conf
-/etc/cups/cupsd.conf
-/etc/cups/cups-files.conf
-/etc/gai.conf
-```
-```bash
-$ find . -iname "*.txt" -print # Поис не чувствительный к регистру
-./2.txt
-./3.TxT
-./1.txt `
-```
-```bash
-$ find . -type f \( -name "*.pdf" -o -name "*.html" \) | head -n 2 # Поиск файлов двух типов одновременно
-./usr/lib/ruby/gems/3.3.0/gems/racc-1.7.3/doc/ja/index.ja.html
-./usr/lib/python3/dist-packages/ansible_collections/cisco/intersight/misc/CL2020 EMEAR DEVWKS-1542 Intersight Ansible Lab Guide.pdf
+find /etc -print #Рекурсивный вывод всех файлов и подкаталогов в /etc
 
--o # логическое ИЛИ
+find /etc -type f -print #Список всех файлов в /etc рекурсивно
+
+find /etc -type d -print #Список всех директориев в /etc
+
+find /etc -type f -name "*.conf" -print #Список всех файлов в /etc заканчивающихся на .conf
+
+find . -iname "*.txt" -print #Поис не чувствительный к регистру (txt,TXT)
+
+find . -type f \( -name "*.pdf" -o -name "*.html" \) #Поиск файлов двух типов одновременно
 ```
 ## exec
 ```bash
