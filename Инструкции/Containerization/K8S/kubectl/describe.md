@@ -11,17 +11,17 @@ kubectl describe [RESOURCE] [NAME] [flags]
 
 ### Что можно получить?
 
-| Ресурс	            | Команда                                     |
-|-----------------------|---------------------------------------------|
-| Поды	                | `kubectl describe pod <pod-name>`           |
-| Узлы	                | `kubectl describe node <node-name>`         |
-| Сервисы	            | `kubectl describe svc <svc-name>`           |
-| Деплойменты           | `kubectl describe deploy <deploy-name>`     |
-| ReplicaSets           | `kubectl describe rs <rs-name>`             |
-| ConfigMap / Secret    | `kubectl describe cm <cm-name>`             |
-| PersistentVolumes	    | `kubectl describe pv <pv-name>`             |
-| Namespaces            | `kubectl describe ns <ns-name>`             |
-| Любой CRD	            | `kubectl describe <crd-resource> <name>`    |
+| Ресурс             | Команда                                  |
+| ------------------ | ---------------------------------------- |
+| Поды               | `kubectl describe pod <pod-name>`        |
+| Узлы               | `kubectl describe node <node-name>`      |
+| Сервисы            | `kubectl describe svc <svc-name>`        |
+| Деплойменты        | `kubectl describe deploy <deploy-name>`  |
+| ReplicaSets        | `kubectl describe rs <rs-name>`          |
+| ConfigMap / Secret | `kubectl describe cm <cm-name>`          |
+| PersistentVolumes  | `kubectl describe pv <pv-name>`          |
+| Namespaces         | `kubectl describe ns <ns-name>`          |
+| Любой CRD          | `kubectl describe <crd-resource> <name>` |
 
 **Если не указать имя, describe выдаст информацию обо всех объектах указанного типа (но это редко полезно из-за объёма вывода).**
 
