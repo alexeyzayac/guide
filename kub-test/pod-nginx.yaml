@@ -1,0 +1,48 @@
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  namespace: app
+  labels:
+    app: web
+    env: prod
+spec:
+
+  volumes:
+    - name: content
+      emptyDir: {}
+
+  initContainers:
+    - name: init-content
+      image: busybox:1.36
+      command: ["sh", "-c", "echo '<h1>Hello from init</h1>' > /work/index.html"]
+      volumeMounts:
+        - name: content
+          mountPath: /work
+      resources:
+        requests:
+          memory: "32Mi"
+          cpu: "100m"
+        limits:
+          memory: "64Mi"
+          cpu: "200m"
+
+  containers:
+    - name: nginx
+      image: nginx:1.27
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - name: content
+          mountPath: /usr/share/nginx/html
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+
+...

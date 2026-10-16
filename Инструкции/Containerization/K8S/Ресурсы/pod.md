@@ -108,6 +108,17 @@ kubectl -n app exec web -- ls /etc
 
 ## Мультиконтейнерные поды с Volumes
 
+> В одном поде может быть несколько контейнеров. Паттерны:
+
+* **Sidecar** - Вспомогательный контейнер рядом с основным. (Пример: log-shipper, envoy-proxy, filebeat.)
+* **Init-контейнер** - Запускается до основных контейнеров, должен успешно завершиться. (Пример: подождать БД, склонировать репозиторий, выставить права.)
+
+> Все контейнеры пода:
+* делят один IP,
+* общаются через `localhost`,
+* могут делить volume,
+* пишут логи в один поток (`kubectl logs` показывает по контейнерам отдельно).
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -118,6 +129,8 @@ metadata:
     app: web
     env: prod
 spec:
+
+
   initContainers:
   - name: init-content
     image: busybox:1.36
@@ -134,11 +147,9 @@ spec:
     volumeMounts:
     - name: content
       mountPath: /usr/share/nginx/html
-
-  volumes:
-  - name: content
-    emptyDir: {}
 ```
+
+> Основные типы volumes:
 
 | Тип                   | Что делает                            |
 |-----------------------|---------------------------------------|
@@ -170,3 +181,63 @@ spec:
 ```
 > ❗ Порядок приоритетов (грубо): env > envFrom, а встроенные переменные (HOSTNAME, POD_NAME через downward API) — отдельно.
 
+## Probes (проверки здоровья)
+
+| Probe	         | Что проверяет | Что делает при провале                                        |
+|----------------|---------------------------| --------------------------------------------------|
+| livenessProbe  | Живой ли контейнер        | Перезапускает контейнер                           |
+| readinessProbe | Готов ли принимать трафик | Убирает из Service endpoints                      |
+| startupProbe   | Запустился ли             | Пока не пройдёт — не запускает liveness/readiness |
+
+```yaml
+spec:
+  containers:
+  - name: app
+    image: myapp
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+      initialDelaySeconds: 10
+      periodSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+      initialDelaySeconds: 3
+      periodSeconds: 3
+```
+
+## Requests (сколько гарантированно) и Limits (максимум, при превышении)
+
+```yaml
+spec:
+  containers:
+  - name: app
+    image: myapp
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+```
+
+> Соотношение CPU/memory в requests и limits влияет на QoS-класс пода:
+
+| QoS        | Когда                                |
+|------------|--------------------------------------|
+| Guaranteed | requests = limits у всех контейнеров |
+| Burstable	 | requests < limits хотя бы у одного   |
+| BestEffort | ни requests, ни limits не заданы     |
+
+# Метки и селекторы
+
+```yaml
+metadata:
+  labels:
+    app: web
+    env: prod
+    tier: frontend
+```
